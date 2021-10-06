@@ -1,4 +1,6 @@
 <?php
+require_once('auth.php');
+require_once('functions.php');
 session_start();
 // if the user is alreay signed in, redirect them to the members_page.php page
 if ($_SESSION['logged']) {
@@ -6,43 +8,15 @@ if ($_SESSION['logged']) {
 }
 // use the following guidelines to create the function in auth.php
 //instead of using "die", return a message that can be printed in the HTML page
-if(count($_POST)>0){
-	// 1. check if email and password have been submitted
-	if (!isset($_POST['email']) || !isset($_POST['password'])) {
-
-	}
-	// 2. check if the email is well formatted
-	else if (filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-
-	}
-	// 3. check if the password is well formatted
-
-	// 4. check if the file containing banned users exists
-	if (!file_exists('banned.csv.php')) {
-
-	}
-	// 5. check if the email has been banned
-	if (contains('banned.csv.php', $_POST['email'])) {
-
-	}
-	// 6. check if the file containing users exists
-	if (!file_exists('user.csv.php')) {
-
-	}
-	// 7. check if the email is registered
-	if (!contains('users.csv.php', $_POST['email'])) {
-
-	}
-	// 8. check if the password is correct
-	if (!contains('users.csv.php', $_POST['password'])) {
-
-	}
+if(count($_POST)>0) {
+	$email_input = $_POST['email'];
+	$password_input = $_POST['password'];
 	// 9. store session information
-	$_SESSION['username'] = $_POST['email'];
-	
-	
-	// 10. redirect the user to the members_page.php page
-	header('Location')
+	if (signin($email_input, $password_input)) {
+		$_SESSION['logged'] = true;
+		header('Location: members_page.php');
+	}
+	else $_SESSION['logged'] = false;
 	
 	/*
 	echo 'check email+password';

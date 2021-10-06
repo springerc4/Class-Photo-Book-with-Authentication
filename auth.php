@@ -1,52 +1,99 @@
 <?php
-
+require_once('functions.php');
 // add parameters
-function signup(){
+function signup($email, $password) {
 	// add the body of the function based on the guidelines of signup.php
-	
+	// check if the email is valid
+	if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		return 'Error: Invalid Email or Password';
+	}
+	// check if password length is between 8 and 16 characters
+	else if(strlen($password)<8 || strlen($password > 16)) {
+		return 'Invalid: Password must be between 8 and 16 characters';
+	}
+	// check if the password contains at least 2 special characters
+	else if (!preg_match('/[!@#$%^&*(),.?":{}|<>]{2,}/', $password)) {
+		return 'Password is Invalid. Please Check Formatting Guidelines';
+	}
+	// check if the file containing banned users exists
+	else if (!file_exists('banned.csv')) {
+		return 'Internal Error. Please Try Again Later';
+	}
+	// check if the email has not been banned
+	else if (contains('banned.csv', $email)) {
+		return 'Invalid Email or Password';
+	}
+	// check if the file containing users exists
+	else if (!file_exists('users.csv')) {
+		return 'Internal Error: Please Try Again Later';
+	}
+	// check if the email is in the database already
+	else if (contains('users.csv', $email)) {
+		echo 'Email Already Registered';
+		return '<a href="signin.php">Sign in?</a>';
+	}
+	// encrypt password
+	// save the user in the database 
+	else {
+		$encrypted_password = password_hash($password, PASSWORD_DEFAULT);
+		$array[] = array($email, $encrypted_password);
+		$handle = fopen('users.csv', 'a+');
+		fputcsv($handle, $array, ';');
+		fclose($handle);
+		echo 'Congratulations! You are officially registered!';
+		return header('Location: signin.php');
+	}
+	// show them a success message and redirect them to the sign in page
 }
 
 // add parameters
-function signin(){
+function signin($email, $password){
 	// add the body of the function based on the guidelines of signin.php
+	$signedIn = false;
 	if (!isset($_POST['email']) || !isset($_POST['password'])) {
-		echo 'Email or Password is Invalid';
+		return 'Email or Password is Invalid';
 	}
 	// 2. check if the email is well formatted
-	else if (!filter_var($_POST['email'], FILTER_VALIDATE_EMAIL)) {
-		echo 'Email or Password is Invalid';
+	else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+		return 'Email or Password is Invalid';
 	}
 	// 3. check if the password is well formatted
-	else if (!preg_match('' ,$_POST['email']))
+	else if (!preg_match('' , $password)) {
+		return 'Email or Password is Invalid';
+	}
 	// 4. check if the file containing banned users exists
 	else if (!file_exists('banned.csv.php')) {
-		echo 'Error';
+		return 'Error';
 	}
 	// 5. check if the email has been banned
-	else if (contains('banned.csv.php', $_POST['email'])) {
-		echo 'Email or Password is Invalid';
+	else if (contains('banned.csv.php', $email)) {
+		return 'Email or Password is Invalid';
 	}
 	// 6. check if the file containing users exists
 	else if (!file_exists('user.csv.php')) {
-		echo 'Error';
+		return 'Error';
 	}
 	// 7. check if the email is registered
-	else if (!contains('users.csv.php', $_POST['email'])) {
-		echo 'User Not Found';
+	else if (!contains('users.csv.php', $email)) {
+		return 'User Not Found';
 	}
 	// 8. check if the password is correct
-	else if (!contains('users.csv.php', $_POST['password'])) {
-		echo 'Password is Invalid';
+	else if (!contains('users.csv.php', password_hash($password, PASSWORD_DEFAULT))) {
+		return 'Password is Invalid';
 	}
-
+	else $signedIn = true;
+	return $signedIn;
 }
 
 function signout(){
 	// add the body of the function based on the guidelines of signout.php
-	
+	$_SESSION['logged'] = false;
+	session_destroy();
 }
 
 function is_logged(){
-	// check if the user is logged
-	//return true|false
+	if ($_SESSION['logged'] = true) {
+		return true;
+	}
+	else return false;
 }

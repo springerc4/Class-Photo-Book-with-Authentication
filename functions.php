@@ -1,5 +1,5 @@
 <?php
-    // Check if user email is banned
+    // Check if user email is banned or active
     function contains($csv_file, $user_input) {
         $contains = false;
         $handle = fopen($csv_file, "r");
@@ -12,6 +12,9 @@
         }
         fclose($handle);
         return $contains;
+    }
+    function passwordMatch($password) {
+        
     }
     // Function to retrieve someones age in years
     function getAge($birthday) {
