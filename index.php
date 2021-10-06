@@ -1,3 +1,10 @@
+<?php
+    session_start();
+    if (!isset($_SESSION['logged'])) {
+        $_SESSION['logged'] = false;
+    }
+?>
+
 <!doctype html>
 <html lang="en">
     <head>

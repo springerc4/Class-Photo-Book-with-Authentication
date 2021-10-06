@@ -1,20 +1,36 @@
 <?php
+    // Converts CSV file to PHP array
+    function convertCSV($csv_file) {
+        $handle = fopen($csv_file, 'r');
+        while(!feof($handle)) {
+            $records[] = fgetcsv($handle, 1024, ';');
+        }
+        fclose($handle);
+        return $records;
+    }
     // Check if user email is banned or active
     function contains($csv_file, $user_input) {
         $contains = false;
         $handle = fopen($csv_file, "r");
         $array = fgetcsv($handle);
         foreach ($array as $users) {
-            if ($user == $user_input) {
+            if ($users == $user_input) {
                 $contains = true;
                 break;
             }
         }
+        print_r($array);
         fclose($handle);
         return $contains;
     }
-    function passwordMatch($password) {
-        
+    function passwordMatch($csv_file, $password) {
+        $array = convertCSV($csv_file);
+        for ($i = 0; $i < count($array); $i++) {
+            if (password_verify($password, $array[$i][1])) {
+                return true;
+            }
+        }
+        return false;
     }
     // Function to retrieve someones age in years
     function getAge($birthday) {

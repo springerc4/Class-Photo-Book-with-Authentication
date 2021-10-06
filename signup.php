@@ -2,21 +2,21 @@
 require_once('auth.php');
 session_start();
 // if the user is alreay signed in, redirect them to the members_page.php page
-if ($_SESSION['logged'] = true) {
-	print_r($_SESSION['logged']);
+if ($_SESSION['logged']) {
+	header('Location: members_page.php');
 }
 // use the following guidelines to create the function in auth.php
 // instead of using "die", return a message that can be printed in the HTML page
 // check if the fields are empty
 if(count($_POST)>0) {
-	if (!isset($email)) {
+	if (!isset($_POST['email'])) {
 		die('Invalid: Please enter an email');
 	}
-	if (!isset($password)) {
+	else if (!isset($_POST['password'])) {
 		die('Invalid: Please enter a password');
 	}
-	if(count($_POST)>0){
-		signup($_POST['email'], $_POST['password']);
+	else {
+		echo signup($_POST['email'], $_POST['password']);
 	}
 }
 
