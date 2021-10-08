@@ -1,7 +1,8 @@
 <?php
     session_start();
+    require_once('auth.php');
     if (!isset($_SESSION['logged'])) {
-        $_SESSION['logged'] = false;
+        $_SESSION['logged'] = "false";
     }
 ?>
 

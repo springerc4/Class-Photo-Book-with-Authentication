@@ -12,7 +12,7 @@ function signup($email, $password) {
 		return 'Invalid: Password must be between 8 and 16 characters';
 	}
 	// check if the password contains at least 2 special characters
-	else if (!preg_match('/[!@#$%^&*(),.?":{}|<>]{2,}/', $password)) {
+	else if (!preg_match('//', $password)) {
 		return 'Password is Invalid. Please Check Formatting Guidelines';
 	}
 	// check if the file containing banned users exists
@@ -46,56 +46,64 @@ function signup($email, $password) {
 }
 
 // add parameters
-function signin($email, $password){
+function signin($email, $password) {
 	// add the body of the function based on the guidelines of signin.php
-	$signedIn = false;
 	if (!isset($_POST['email']) || !isset($_POST['password'])) {
-		return 'Email or Password is Invalid';
+		echo 'Email or Password is Invalid';
+		return false;
 	}
 	// 2. check if the email is well formatted
 	else if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-		return 'Email or Password is Invalid';
+		echo 'Email or Password is Invalid';
+		return false;
 	}
 	// 3. check if the password is well formatted
-	else if (!preg_match('' , $password)) {
-		return 'Email or Password is Invalid';
+	else if (!preg_match('//' , $password)) {
+		echo 'Email or Password is Invalid';
+		return false;
 	}
 	// 4. check if the file containing banned users exists
 	else if (!file_exists('banned.txt')) {
-		return 'Error';
+		echo 'Error';
+		return false;
 	}
 	// 5. check if the email has been banned
 	else if (contains('banned.txt', $email)) {
-		return 'Email or Password is Invalid';
+		echo 'Email or Password is Invalid';
+		return false;
 	}
 	// 6. check if the file containing users exists
 	else if (!file_exists('users.txt')) {
-		return 'Error';
+		echo 'Error';
+		return false;
 	}
 	// 7. check if the email is registered
 	else if (!contains('users.txt', $email)) {
-		return 'User Not Found';
+		echo 'User Not Found';
+		return false;
 	}
 	// 8. check if the password is correct
 	else if (!passwordMatch('users.txt', $password)) {
-		return 'Password is Invalid';
+		echo 'Password is Invalid';
+		return false;
 	}
 	else {
-		$signedIn = true;
-		return $signedIn;
+		return true;
 	}
 }
 
-function signout(){
+function signout() {
 	// add the body of the function based on the guidelines of signout.php
-	$_SESSION['logged'] = false;
+	$_SESSION['logged'] = "false";
 	session_destroy();
 	header('Location: index.php');
 }
 
-function is_logged(){
-	if ($_SESSION['logged'] = true) {
+function is_logged() {
+	if ($_SESSION['logged'] == "false") {
 		return true;
 	}
-	else return false;
+	else {
+		return false;
+	}
 }

@@ -12,14 +12,16 @@
     function contains($csv_file, $user_input) {
         $contains = false;
         $handle = fopen($csv_file, "r");
-        $array = fgetcsv($handle);
-        foreach ($array as $users) {
-            if ($users == $user_input) {
+        while (!feof($handle)) {
+            $record = fgetcsv($handle, 1024, ';');
+            if ($record == '') {
+                continue;
+            }
+            if ($record[0] == $user_input) {
                 $contains = true;
                 break;
             }
         }
-        print_r($array);
         fclose($handle);
         return $contains;
     }

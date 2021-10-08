@@ -1,3 +1,6 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -9,6 +12,7 @@
 	<body>
     <?php
       // Import Data and Functions
+      require_once('auth.php');
       require_once('functions.php');
       require_once('json_util.php');
       $student_array = convertToPhp('class.json');

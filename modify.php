@@ -1,4 +1,9 @@
 <?php
+    session_start();
+    require_once('auth.php');
+    if ($_SESSION['logged'] == "false") {
+      die('You have to be logged in to modify a user!');
+    }
     require_once('json_util.php');
     $new_array = convertToPhp('class.json');
     $index = $_GET['index'];
