@@ -1,14 +1,6 @@
 <?php
     session_start();
     require_once('auth.php');
-    if ($_SESSION['logged'] == "false") {
-      die('You have to be logged in to create a user!');
-    }
-    require_once('json_util.php');
-    $new_array = convertToPhp('class.json');
-    $duplicate = $new_array[rand(0,3)];
-    $new_array[count($new_array)] = $duplicate;
-    convertToJson($new_array, 'class.json');
 ?>
 <!-- Display "user created" message to the user -->
 <html lang="en">
@@ -18,6 +10,25 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <title>User Created</title>
   </head>
+  <?php
+      if ($_SESSION['logged'] == "false") {
+  ?>
+  <body>
+    <div class="alert alert-danger" role="alert">
+      <h4 class="alert-heading">I'm Sorry</h4>
+      <p>In order to create a user, you have to be signed in to an account.</p>
+      <hr>
+      <p class="mb-0">
+        <a href="signup.php"><button type="button" class="btn btn-primary">Sign Up</button></a>
+        <a href="signin.php"><button type="button" class="btn btn-primary">Sign In</button></a>
+        <a href="index.php"><button type="button" class="btn btn-primary">Home</button></a>
+      </p>
+    </div>
+  </body>
+  <?php
+      }
+      else {
+  ?>
   <body>
     <div class="card" style="width: 18rem; margin-left: 40%; margin-top: 5%;">
         <img src="https://st2.depositphotos.com/5383370/10880/v/450/depositphotos_108806350-stock-illustration-happy-businessman-winks-and-hand.jpg" class="card-img-top" alt="Man approves with thumbs up">
@@ -33,3 +44,11 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.min.js" integrity="sha384-skAcpIdS7UcVUC05LJ9Dxay8AXcDYfBJqt1CJ85S/CFujBsIzCIv+l9liuYLaMQ/" crossorigin="anonymous"></script>
   </body>
 </html>
+<?php
+      require_once('json_util.php');
+      $new_array = convertToPhp('class.json');
+      $duplicate = $new_array[rand(0,3)];
+      $new_array[count($new_array)] = $duplicate;
+      convertToJson($new_array, 'class.json');
+    }
+?>

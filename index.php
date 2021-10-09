@@ -66,6 +66,16 @@
                         <a href="create.php" style="text-decoration: none; color: white;">Generate User</a>
                     </button>
                 </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-primary" style="text-align: center;">
+                        <a href="signin.php" style="text-decoration: none; color: white;">Sign In</a>
+                    </button>
+                </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-primary" style="text-align: center;">
+                        <a href="signup.php" style="text-decoration: none; color: white;">Sign Up</a>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Import JS from Bootstrap -->
