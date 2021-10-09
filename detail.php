@@ -16,6 +16,12 @@
       require_once('functions.php');
       require_once('json_util.php');
       $student_array = convertToPhp('class.json');
+      if (isset($_POST['submit'])) {
+        $target_dir = "uploads/";
+        $target_file = $target_dir.basename($_FILES["photoFile"]["name"]);
+        move_uploaded_file($_FILES["photoFile"]["tmp_name"], $target_file);
+        $student_array[$_GET['index']]['profile pic'] = $target_file;
+      }
     ?>
 		<link rel="stylesheet" href="assets/css/detail.css" />
     <title>
@@ -198,6 +204,20 @@
                 echo $student_array[$_GET['index']]['fun fact'];
             ?>
           </p>
+          <?php
+            if ($_SESSION['logged'] == "true") {
+          ?>
+          <form method="POST" enctype="multipart/form-data">
+            <div class="input-group mb-3">
+              <input name="photoFile" type="file" class="form-control" id="inputGroupFile02">
+              <br>
+              <button name="submit" type="submit" class="btn btn-primary mb-3">Update Photo</button>
+            </div>
+          </form>
+          <?php
+            }
+            convertToJson($student_array, 'class.json');
+          ?>
         </div>
       </div>
       <hr>

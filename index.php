@@ -76,6 +76,11 @@
                         <a href="signup.php" style="text-decoration: none; color: white;">Sign Up</a>
                     </button>
                 </div>
+                <div class="col text-center">
+                    <button type="button" class="btn btn-primary" style="text-align: center;">
+                        <a href="signout.php" style="text-decoration: none; color: white;">Sign Out</a>
+                    </button>
+                </div>
             </div>
         </div>
         <!-- Import JS from Bootstrap -->

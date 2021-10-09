@@ -12,7 +12,9 @@ function signup($email, $password) {
 		return 'Invalid: Password must be between 8 and 16 characters';
 	}
 	// check if the password contains at least 2 special characters
-	else if (!preg_match('//', $password)) {
+	else if ((!preg_match('/\w[!@#$%^&*]\w[!@#$%^&*]/', $password)) || (!preg_match('/[!@#$%^&*]\w[!@#$%^&*]/', $password))
+	||  (!preg_match('/\w[!@#$%^&*]{1,}/', $password)) || (!preg_match('/[!@#$%^&*]{1,}\w/', $password))
+	|| (!preg_match('/\w[!@#$%^&*]{1,}\w/', $password))) {
 		return 'Password is Invalid. Please Check Formatting Guidelines';
 	}
 	// check if the file containing banned users exists
@@ -40,7 +42,7 @@ function signup($email, $password) {
 		$handle = fopen('users.txt', 'a+');
 		fputcsv($handle, $array, ';');
 		fclose($handle);
-		header('Location: signin.php');
+		header('Location: auth/signin.php');
 	}
 	//show them a success message and redirect them to the sign in page
 }
